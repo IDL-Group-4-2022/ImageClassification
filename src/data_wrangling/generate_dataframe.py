@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+import numpy as np
 
 LABELS_DIR = 'resources/data/original/dl2021-image-corpus-proj/annotations/'
 
@@ -23,5 +24,8 @@ df = (
     .drop(['labels'], axis=1)
     .join(df.labels.str.join('|').str.get_dummies())
 )
+df['im_name'] = df.index
 
-df.to_csv('resources/data/generated/train.csv')
+df = df[np.append(['im_name'], df.columns[:-1])]
+
+df.to_csv('resources/data/generated/train.csv', index=False)
