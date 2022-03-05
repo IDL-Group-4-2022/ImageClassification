@@ -24,10 +24,9 @@ from utils.image_loader import get_dataloaders
 torch.manual_seed(42)
 np.random.seed(42)
 
-
 # %%
 #--- hyperparameters ---
-VERBOSE = True
+VERBOSE = 1
 N_EPOCHS = 10
 BATCH_SIZE_TRAIN = 200
 BATCH_SIZE_TEST = 2000
@@ -39,7 +38,6 @@ WEIGHT_DECAY = 1e-5
 #--- fixed constants ---
 NUM_CLASSES = 14
 IMG_DIR = 'resources/data/original/dl2021-image-corpus-proj/images'
-LABEL_DIR = 'resources/data/original/dl2021-image-corpus-proj/annotations'
 
 # %%
 df = pd.read_csv('resources/data/generated/train.csv', index_col='im_name')
@@ -66,10 +64,8 @@ model = Model(NUM_CLASSES).to(device)
 
 optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
 
-# loss_function = torch.nn.BCELoss()
-loss_function = torch.nn.MultiLabelSoftMarginLoss()
+loss_function = torch.nn.BCELoss()
 
-losses = []
 #--- training ---
 model.train(
     N_EPOCHS,
@@ -78,7 +74,7 @@ model.train(
     optimizer,
     train_loader,
     dev_loader,
-    verbose=1,
+    verbose=VERBOSE,
 )
 
 # %%
