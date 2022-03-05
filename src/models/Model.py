@@ -28,7 +28,9 @@ class Model(nn.Module):
         plt.ion()
         figure, axs = plt.subplots(1, 2)
         train_line, = axs[0].plot(range(10), range(10), label='train_loss')
+        axs[0].set_title('Train Loss')
         dev_line, = axs[1].plot(dev_batches, dev_losses, label='dev_loss')
+        axs[1].set_title('Development Loss')
         previous_loss_total = 99999999999
         for epoch in range(n_epochs):
             for batch_num, (data, target) in enumerate(train_loader):
@@ -44,12 +46,13 @@ class Model(nn.Module):
                 loss.backward()
                 optimizer.step()
 
-                train_loss = loss.item()
+                train_loss = loss.item() / len(data)
                 train_losses.append(train_loss)
 
                 if verbose > 0:
                     print(
-                        f'Training: Epoch {epoch} - Batch {batch_num + 1}'
+                        f'Training: Epoch {epoch}/{n_epochs}'
+                        f' - Batch {batch_num + 1}'
                         f'/{len(train_loader)}: Loss: {train_loss:.4f}'
                     )
                 if verbose > 1:
@@ -80,6 +83,7 @@ class Model(nn.Module):
 
                     loss_total += loss_function(dev_output, dev_target)
 
+                loss_total /= len(dev_loader)
                 dev_losses.append(loss_total.item())
                 dev_batches.append(len(train_losses))
                 axs[1].set_xlim(0, dev_batches[-1] * 1.2)
@@ -91,8 +95,8 @@ class Model(nn.Module):
 
                 if verbose > 0:
                     print(
-                        f'Development: Batch {batch_num + 1}'
-                        f'/{len(train_loader)}: Loss: {loss_total:.4f}'
+                        f'Development: Epoch {epoch + 1}'
+                        f': Loss: {loss_total:.4f}'
                     )
                     predicted = torch.where(dev_output > 0.5, 1, 0)
                     print_metrics_multilabel(
@@ -103,4 +107,5 @@ class Model(nn.Module):
                 if previous_loss_total < loss_total:
                     break
                 previous_loss_total = loss_total
-                plt.show()
+        plt.ioff()
+        plt.show(block=True)
