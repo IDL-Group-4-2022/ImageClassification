@@ -4,7 +4,7 @@ Parent class for our models which contains the training
 
 import torch.nn as nn
 import torch
-from matplotlib import pyplot import plt
+from matplotlib import pyplot as plt
 
 
 class Model(nn.Module):
@@ -15,8 +15,8 @@ class Model(nn.Module):
         self,
         n_epochs: int,
         device: str,
-        loss_function: torch.Module,
-        optimizer: torch.Module,
+        loss_function: torch.nn.Module,
+        optimizer: torch.nn.Module,
         train_loader: torch.utils.data.DataLoader,
         dev_loader: torch.utils.data.DataLoader,
         VERBOSE: bool = False,
@@ -24,7 +24,7 @@ class Model(nn.Module):
         losses = []
         previous_loss_total = 99999999999
         for epoch in range(n_epochs):
-            for batch_num, (data, target) in enumerate(self.train_loader):
+            for batch_num, (data, target) in enumerate(train_loader):
                 data, target = data.to(device), target.to(device)
 
                 self.zero_grad()
@@ -55,7 +55,7 @@ class Model(nn.Module):
                 # dev_total = 0
                 # dev_correct = 0
                 loss_total = 0
-                for dev_data, dev_target in self.dev_loader:
+                for dev_data, dev_target in dev_loader:
                     dev_data, dev_target \
                         = dev_data.to(device), dev_target.to(device)
 
