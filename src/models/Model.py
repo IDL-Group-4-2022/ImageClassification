@@ -5,6 +5,7 @@ Parent class for our models which contains the training
 import torch.nn as nn
 import torch
 from matplotlib import pyplot as plt
+from utils.metrics import print_metrics_multilabel
 
 
 class Model(nn.Module):
@@ -21,10 +22,13 @@ class Model(nn.Module):
         dev_loader: torch.utils.data.DataLoader,
         verbose: int = 1,
     ) -> None:
-        losses = []
+        train_losses = []
+        dev_losses = []
+        dev_batches = []
         plt.ion()
-        figure, ax = plt.subplots(figsize=(8,6))
-        line1, = ax.plot(range(10), range(10))
+        figure, axs = plt.subplots(1, 2)
+        train_line, = axs[0].plot(range(10), range(10), label='train_loss')
+        dev_line, = axs[1].plot(dev_batches, dev_losses, label='dev_loss')
         previous_loss_total = 99999999999
         for epoch in range(n_epochs):
             for batch_num, (data, target) in enumerate(train_loader):
@@ -41,27 +45,25 @@ class Model(nn.Module):
                 optimizer.step()
 
                 train_loss = loss.item()
-                losses.append(train_loss)
+                train_losses.append(train_loss)
 
-                print(
-                    f'Training: Epoch {epoch} - Batch {batch_num + 1}'
-                    f'/{len(train_loader)}: Loss: {train_loss:.4f}'
-                )
-                # total = target.shape[0] * target.shape[1]
-                # predicted = torch.where(output > 0.5, 1, 0)
-                # train_correct = torch.sum(predicted == target)
-                # if VERBOSE:
-                #     print('Training: Epoch %d - Batch %d/%d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' %
-                #           (epoch + 1, batch_num + 1, len(train_loader), train_loss,
-                #            100. * train_correct / total, train_correct, total))
+                if verbose > 0:
+                    print(
+                        f'Training: Epoch {epoch} - Batch {batch_num + 1}'
+                        f'/{len(train_loader)}: Loss: {train_loss:.4f}'
+                    )
+                if verbose > 1:
+                    predicted = torch.where(output > 0.5, 1, 0)
+                    print_metrics_multilabel(
+                        target.cpu().numpy(), predicted.cpu().numpy()
+                    )
 
-                ax.set_xlim(0, len(losses))
-                ax.set_ylim(0, max(losses) * 1.2)
-                line1.set_xdata(range(len(losses)))
-                line1.set_ydata(losses)
+                train_line.set_xdata(range(len(train_losses)))
+                train_line.set_ydata(train_losses)
+                axs[0].set_xlim(0, len(train_losses))
+                axs[0].set_ylim(0, max(train_losses) * 1.2)
                 figure.canvas.draw()
                 figure.canvas.flush_events()
-                plt.pause(0.2)
 
             with torch.no_grad():
                 # dev_total = 0
@@ -76,17 +78,29 @@ class Model(nn.Module):
                     dev_output = dev_output.to(torch.float32)
                     dev_target = dev_target.to(torch.float32)
 
-                    loss_total += loss_function(dev_output, dev_target).item()
+                    loss_total += loss_function(dev_output, dev_target)
 
-                    # predicted = torch.where(dev_output > 0.5, 1, 0)
+                dev_losses.append(loss_total.item())
+                dev_batches.append(len(train_losses))
+                axs[1].set_xlim(0, dev_batches[-1] * 1.2)
+                axs[1].set_ylim(0, max(dev_losses) * 1.2)
+                dev_line.set_xdata(dev_batches)
+                dev_line.set_ydata(dev_losses)
+                figure.canvas.draw()
+                figure.canvas.flush_events()
 
-                    # dev_correct += torch.sum(predicted == dev_target)
-                    # dev_total += dev_target.shape[0] * dev_target.shape[1]
-                # print('Dev: Epoch %d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' %
-                #           (epoch + 1, loss_total,
-                #            100. * dev_correct / dev_total, dev_correct, dev_total))
+                if verbose > 0:
+                    print(
+                        f'Development: Batch {batch_num + 1}'
+                        f'/{len(train_loader)}: Loss: {loss_total:.4f}'
+                    )
+                    predicted = torch.where(dev_output > 0.5, 1, 0)
+                    print_metrics_multilabel(
+                        dev_target.cpu().numpy(), predicted.cpu().numpy()
+                    )
 
                 # early stopping
                 if previous_loss_total < loss_total:
                     break
                 previous_loss_total = loss_total
+                plt.show()
