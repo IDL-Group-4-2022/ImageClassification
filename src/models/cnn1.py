@@ -4,9 +4,10 @@ A CNN model
 
 import torch
 import torch.utils.data
-import torch.nn as nn
+from models.Model import Model
 
-class CNN(nn.Module):
+
+class CNN(Model):
     def __init__(self, num_classes):
         super(CNN, self).__init__()
         self.num_classes = num_classes
@@ -63,4 +64,3 @@ class CNN(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.l2(x)
         return x
-
