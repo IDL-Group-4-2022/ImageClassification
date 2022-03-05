@@ -14,10 +14,10 @@ class CNN(Model):
         self.l1 = torch.nn.Sequential(
             # Conv Layer 1
             # image size: 3 x 128 x 128
-            torch.nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, stride=1, padding=0, bias=True),
+            torch.nn.Conv2d(in_channels=3, out_channels=6, kernel_size=5, stride=1, padding=0, bias=True),
             # image size: 3 x 124 x 124
             torch.nn.BatchNorm2d(6),
-            torch.nn.ReLU(inplace=True), # inplace=True: to minimize memory usage
+            torch.nn.ReLU(inplace=True),  # inplace=True: to minimize memory usage
             torch.nn.MaxPool2d(kernel_size=2, stride=2),
             # image size: 3 x 62 x 62
 

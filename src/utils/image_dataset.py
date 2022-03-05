@@ -5,7 +5,7 @@ Generates a custom image dataset for a DataLoader.
 # %%
 import numpy as np
 from torch.utils.data import Dataset
-from torchvision.io import read_image, ImageReadMode
+from PIL import Image
 from pathlib import Path
 
 
@@ -23,7 +23,7 @@ class CustomImageDataset(Dataset):
         img_name = self.image_names[idx]
         img_path = Path(self.img_dir) / f"im{img_name}.jpg"
 
-        image = read_image(str(img_path), mode=ImageReadMode.RGB)
+        image = Image.open(img_path).convert('RGB')
 
         if self.transform:
             image = self.transform(image)

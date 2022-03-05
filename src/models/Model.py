@@ -19,9 +19,12 @@ class Model(nn.Module):
         optimizer: torch.nn.Module,
         train_loader: torch.utils.data.DataLoader,
         dev_loader: torch.utils.data.DataLoader,
-        VERBOSE: bool = False,
+        verbose: int = 1,
     ) -> None:
         losses = []
+        plt.ion()
+        figure, ax = plt.subplots(figsize=(8,6))
+        line1, = ax.plot(range(10), range(10))
         previous_loss_total = 99999999999
         for epoch in range(n_epochs):
             for batch_num, (data, target) in enumerate(train_loader):
@@ -40,6 +43,10 @@ class Model(nn.Module):
                 train_loss = loss.item()
                 losses.append(train_loss)
 
+                print(
+                    f'Training: Epoch {epoch} - Batch {batch_num + 1}'
+                    f'/{len(train_loader)}: Loss: {train_loss:.4f}'
+                )
                 # total = target.shape[0] * target.shape[1]
                 # predicted = torch.where(output > 0.5, 1, 0)
                 # train_correct = torch.sum(predicted == target)
@@ -48,8 +55,13 @@ class Model(nn.Module):
                 #           (epoch + 1, batch_num + 1, len(train_loader), train_loss,
                 #            100. * train_correct / total, train_correct, total))
 
-                plt.plot(losses)
-            plt.show(block=False)
+                ax.set_xlim(0, len(losses))
+                ax.set_ylim(0, max(losses) * 1.2)
+                line1.set_xdata(range(len(losses)))
+                line1.set_ydata(losses)
+                figure.canvas.draw()
+                figure.canvas.flush_events()
+                plt.pause(0.2)
 
             with torch.no_grad():
                 # dev_total = 0

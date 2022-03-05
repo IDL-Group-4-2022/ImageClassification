@@ -79,6 +79,7 @@ model.train(
     optimizer,
     train_loader,
     dev_loader,
+    verbose=1,
 )
 
 # %%
