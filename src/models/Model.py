@@ -31,7 +31,7 @@ class Model(nn.Module):
         axs[0].set_title('Train Loss')
         dev_line, = axs[1].plot(dev_batches, dev_losses, label='dev_loss')
         axs[1].set_title('Development Loss')
-        previous_loss_total = 99999999999
+        previous_loss_total = float('inf')
         for epoch in range(n_epochs):
             for batch_num, (data, target) in enumerate(train_loader):
                 data, target = data.to(device), target.to(device)
