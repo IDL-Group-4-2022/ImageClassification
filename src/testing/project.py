@@ -2,16 +2,16 @@
 # To add a new markdown cell, type '# %% [markdown]'
 # %% [markdown]
 # # Team 4 - IDL - Exercise 2
-# 
+#
 # Members:
-# 
+#
 # * Daniel Cauchi
 # * Outi Savolainen
 # * Silva Perander
 # %% [markdown]
 # # Starting Notes
-# 
-# 
+#
+#
 # * I changed the batch sizes for train and test to increase speed
 # * Results of our experiments are at the end of the notebook as markdown cells
 
@@ -156,7 +156,7 @@ class CNN(nn.Module):
             torch.nn.ReLU(inplace=True), # inplace=True: to minimize memory usage
             torch.nn.MaxPool2d(kernel_size=2, stride=2),
             # image size: 3 x 62 x 62
-            
+
             # Conv layer 2
             torch.nn.Conv2d(in_channels=6, out_channels=7, kernel_size=3, stride=1, padding=0, bias=True),
             # image size: 3 x 60 x 60
@@ -227,7 +227,7 @@ previous_loss_total = 99999999999
 for epoch in range(N_EPOCHS):
     for batch_num, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
-        
+
         model.zero_grad()
         output = model(data)
 
@@ -248,11 +248,11 @@ for epoch in range(N_EPOCHS):
         losses.append(train_loss)
 
         if VERBOSE:
-            
-            print('Training: Epoch %d - Batch %d/%d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' % 
-                  (epoch + 1, batch_num + 1, len(train_loader), train_loss, 
+
+            print('Training: Epoch %d - Batch %d/%d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' %
+                  (epoch + 1, batch_num + 1, len(train_loader), train_loss,
                    100. * train_correct / total, train_correct, total))
-    
+
         plt.plot(losses)
         plt.savefig("losses_adam_multilabel.png")
 
@@ -263,14 +263,14 @@ for epoch in range(N_EPOCHS):
         loss_total = 0
         for dev_data, dev_target in dev_loader:
             dev_data, dev_target = dev_data.to(device), dev_target.to(device)
-            
+
             dev_output = model(dev_data)
-            
+
             dev_output = dev_output.to(torch.float32)
             dev_target = dev_target.to(torch.float32)
-            
+
             predicted = torch.where(dev_output > 0.5, 1, 0)
-            
+
             dev_correct += torch.sum(predicted == dev_target)
             dev_total += dev_target.shape[0] * dev_target.shape[1]
             loss_total += loss_function(dev_output, dev_target).item()
@@ -280,10 +280,10 @@ for epoch in range(N_EPOCHS):
         #     f'{dev_correct}/{dev_total} = {dev_correct / dev_total * 100}%\n'
         #     f'Loss: {loss_total}\n\n'
         # )
-        print('Dev: Epoch %d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' % 
-                  (epoch + 1, loss_total, 
+        print('Dev: Epoch %d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' %
+                  (epoch + 1, loss_total,
                    100. * dev_correct / dev_total, dev_correct, dev_total))
-    
+
         # if previous_loss_total < loss_total:
         #     break
         # previous_loss_total = loss_total
@@ -305,10 +305,10 @@ with torch.no_grad():
         total_correct += correct
         count = len(target)
         total += count
-        print('Evaluating: Batch %d/%d: Loss: %.4f | Test Acc: %.3f%% (%d/%d)' % 
-              (batch_num + 1, len(test_loader), test_loss / (batch_num + 1), 
+        print('Evaluating: Batch %d/%d: Loss: %.4f | Test Acc: %.3f%% (%d/%d)' %
+              (batch_num + 1, len(test_loader), test_loss / (batch_num + 1),
                100. * correct / count, correct, count))
-        
+
     print(f'Total Test Accuracy: {total_correct}/{total} = {total_correct / total * 100}%')
 
 # %% [markdown]
@@ -329,7 +329,7 @@ for epoch in range(N_EPOCHS):
     train_loss = 0
     for batch_num, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
-        
+
         model.zero_grad()
         output = model(data)
         loss = loss_function(output, target)
@@ -342,12 +342,12 @@ for epoch in range(N_EPOCHS):
 
         predicted = torch.argmax(output, axis=1)
         train_correct = sum(predicted == target)
-        
+
         if VERBOSE:
-            print('Training: Epoch %d - Batch %d/%d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' % 
-                  (epoch + 1, batch_num + 1, len(train_loader), train_loss / (batch_num + 1), 
+            print('Training: Epoch %d - Batch %d/%d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' %
+                  (epoch + 1, batch_num + 1, len(train_loader), train_loss / (batch_num + 1),
                    100. * train_correct / total, train_correct, total))
-    
+
         losses.append(train_loss/(batch_num + 1))
         plt.plot(losses)
         plt.savefig("losses_adagrad_avgperbatch.png")
@@ -390,10 +390,10 @@ with torch.no_grad():
         total_correct += correct
         count = len(target)
         total += count
-        print('Evaluating: Batch %d/%d: Loss: %.4f | Test Acc: %.3f%% (%d/%d)' % 
-              (batch_num + 1, len(test_loader), test_loss / (batch_num + 1), 
+        print('Evaluating: Batch %d/%d: Loss: %.4f | Test Acc: %.3f%% (%d/%d)' %
+              (batch_num + 1, len(test_loader), test_loss / (batch_num + 1),
                100. * correct / count, correct, count))
-        
+
     print(f'Total Test Accuracy: {total_correct}/{total} = {total_correct / total * 100}%')
 
 # %% [markdown]
@@ -411,7 +411,7 @@ previous_loss_total = 99999999999
 for epoch in range(N_EPOCHS):
     for batch_num, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
-        
+
         model.zero_grad()
         output = model(data)
         loss = loss_function(output, target)
@@ -423,12 +423,12 @@ for epoch in range(N_EPOCHS):
         train_loss = loss.item()
         predicted = torch.argmax(output, axis=1)
         train_correct = sum(predicted == target)
-        
+
         if VERBOSE:
-            print('Training: Epoch %d - Batch %d/%d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' % 
-                  (epoch + 1, batch_num + 1, len(train_loader), train_loss / (batch_num + 1), 
+            print('Training: Epoch %d - Batch %d/%d: Loss: %.4f | Train Acc: %.3f%% (%d/%d)' %
+                  (epoch + 1, batch_num + 1, len(train_loader), train_loss / (batch_num + 1),
                    100. * train_correct / total, train_correct, total))
-    
+
     with torch.no_grad():
         # early stopping
         dev_total = 0
@@ -467,21 +467,21 @@ with torch.no_grad():
         total_correct += correct
         count = len(target)
         total += count
-        print('Evaluating: Batch %d/%d: Loss: %.4f | Test Acc: %.3f%% (%d/%d)' % 
-              (batch_num + 1, len(test_loader), test_loss / (batch_num + 1), 
+        print('Evaluating: Batch %d/%d: Loss: %.4f | Test Acc: %.3f%% (%d/%d)' %
+              (batch_num + 1, len(test_loader), test_loss / (batch_num + 1),
                100. * correct / count, correct, count))
-        
+
     print(f'Total Test Accuracy: {total_correct}/{total} = {total_correct / total * 100}%')
 
 # %% [markdown]
 # # Regularizers and Optimizers
-# 
+#
 # With regards to regularization, we are using:
 # * Data augmentation (in the train_transform when loading the data)
 # * Early stopping
 # * Dropout (in the linear layers of the model)
 # * L2 norm (the weight_decay parameter of the optimizers)
-# 
+#
 # With regards to optimization, we have experimented with these:
 # * Batch Normalization (for both convolutional and linear layers)
 # * Momentum for SGD
@@ -491,16 +491,16 @@ with torch.no_grad():
 #     * SGD
 # %% [markdown]
 # # Concluding Thoughts
-# 
+#
 # * Using too much regularization will lead to very slow convergence. For example:
 #     * Using too much dropout
 #     * Setting weight decay to a too high value
-#     
+#
 # * Faster convergence was achieved with a high batch size of 500, when compared to one with 100
 #     * In some cases, with a small batch size (100) and more output channels of the convolutional layers, it could lead to faster convergence.
-# 
+#
 # * Batch normalization helped tremendously in convergence. Some models often fell into local minima without it
-# 
+#
 # * Best accuracy was obtained with the **Adam optimizer**.
 #     * The accuracy score is: 74.6%
 
