@@ -12,7 +12,7 @@ class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
 
-    def train(
+    def do_train(
         self,
         n_epochs: int,
         device: str,
@@ -33,6 +33,7 @@ class Model(nn.Module):
         axs[1].set_title('Development Loss')
         previous_loss_total = float('inf')
         for epoch in range(n_epochs):
+            self.model.train()  # set model to training mode
             for batch_num, (data, target) in enumerate(train_loader):
                 data, target = data.to(device), target.to(device)
 
@@ -46,7 +47,7 @@ class Model(nn.Module):
                 loss.backward()
                 optimizer.step()
 
-                train_loss = loss.item() / len(data)
+                train_loss = loss.item()
                 train_losses.append(train_loss)
 
                 if verbose > 0:
@@ -69,6 +70,7 @@ class Model(nn.Module):
                 figure.canvas.flush_events()
 
             with torch.no_grad():
+                self.model.eval()  # set model to eval mode
                 # dev_total = 0
                 # dev_correct = 0
                 loss_total = 0
@@ -83,7 +85,6 @@ class Model(nn.Module):
 
                     loss_total += loss_function(dev_output, dev_target)
 
-                loss_total /= len(dev_loader)
                 dev_losses.append(loss_total.item())
                 dev_batches.append(len(train_losses))
                 axs[1].set_xlim(0, dev_batches[-1] * 1.2)

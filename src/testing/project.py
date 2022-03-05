@@ -17,8 +17,8 @@ import torch
 import torch.utils.data
 import numpy as np
 import pandas as pd
-from models.cnn1 import CNN as Model
-# from models.transferred import Transferred as Model
+# from models.cnn1 import CNN as Model
+from models.transferred import Transferred as Model
 from utils.image_loader import get_dataloaders
 
 torch.manual_seed(42)
@@ -67,7 +67,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECA
 loss_function = torch.nn.BCELoss()
 
 #--- training ---
-model.train(
+model.do_train(
     N_EPOCHS,
     device,
     loss_function,
