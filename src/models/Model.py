@@ -4,7 +4,7 @@ Parent class for our models which contains the training
 
 import torch.nn as nn
 import torch
-from matplotlib.pyplot import plt
+from matplotlib import pyplot import plt
 
 
 class Model(nn.Module):
