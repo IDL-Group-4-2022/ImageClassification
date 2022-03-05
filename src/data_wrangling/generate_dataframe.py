@@ -1,3 +1,10 @@
+"""
+This script generates train.csv from the data folders
+
+im_name will correspons to multilabel one hot encoded labels
+"""
+
+
 from pathlib import Path
 import pandas as pd
 import numpy as np
