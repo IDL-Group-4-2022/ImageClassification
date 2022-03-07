@@ -25,13 +25,14 @@ class Model(nn.Module):
         train_losses = []
         dev_losses = []
         dev_batches = []
+        dev_loss_lower_than_min_consecutive_count = 0
         plt.ion()
         figure, axs = plt.subplots(1, 2)
         train_line, = axs[0].plot(range(10), range(10), label='train_loss')
         axs[0].set_title('Train Loss')
         dev_line, = axs[1].plot(dev_batches, dev_losses, label='dev_loss')
         axs[1].set_title('Development Loss')
-        previous_loss_total = float('inf')
+        min_loss = float('inf')
         for epoch in range(n_epochs):
             self.train()  # set model to training mode
             for batch_num, (data, target) in enumerate(train_loader):
@@ -71,8 +72,6 @@ class Model(nn.Module):
 
             with torch.no_grad():
                 self.eval()  # set model to eval mode
-                # dev_total = 0
-                # dev_correct = 0
                 loss_total = 0
                 for dev_data, dev_target in dev_loader:
                     dev_data, dev_target \
@@ -105,8 +104,12 @@ class Model(nn.Module):
                     )
 
                 # early stopping
-                if previous_loss_total < loss_total:
-                    break
-                previous_loss_total = loss_total
+                if loss_total < min_loss:
+                    min_loss = loss_total
+                    dev_loss_lower_than_min_consecutive_count = 0
+                elif min_loss < loss_total:
+                    dev_loss_lower_than_min_consecutive_count += 1
+                    if dev_loss_lower_than_min_consecutive_count == 3:
+                        break
         plt.ioff()
         plt.show(block=True)
