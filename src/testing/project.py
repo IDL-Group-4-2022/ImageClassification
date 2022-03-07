@@ -17,9 +17,9 @@ import torch
 import torch.utils.data
 import numpy as np
 import pandas as pd
+from utils.image_loader import get_dataloaders
 # from models.cnn1 import CNN as Model
 from models.transferred import Transferred as Model
-from utils.image_loader import get_dataloaders
 
 torch.manual_seed(42)
 np.random.seed(42)
@@ -62,7 +62,8 @@ else:
 #--- set up ---
 model = Model(NUM_CLASSES).to(device)
 
-optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
+# optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
+optimizer = torch.optim.Adam(model.parameters(), weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
 
 loss_function = torch.nn.BCELoss()
 

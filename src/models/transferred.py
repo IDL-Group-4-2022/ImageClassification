@@ -14,7 +14,7 @@ class Transferred(Model):
         super(Transferred, self).__init__()
         # Source: https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html
         self.num_classes = num_classes
-        self.model = models.googlenet(pretrained=True)
+        self.model = models.resnext50_32x4d(pretrained=True)
         for param in self.model.parameters():
             param.requires_grad = False
         num_ftrs = self.model.fc.in_features
