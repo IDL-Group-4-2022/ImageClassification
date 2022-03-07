@@ -26,8 +26,8 @@ np.random.seed(42)
 
 # %%
 #--- hyperparameters ---
-VERBOSE = 1
-N_EPOCHS = 10
+VERBOSE = 2
+N_EPOCHS = 100
 BATCH_SIZE_TRAIN = 200
 BATCH_SIZE_TEST = 2000
 LR = 0.05
