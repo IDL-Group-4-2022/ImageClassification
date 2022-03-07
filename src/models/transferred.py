@@ -19,17 +19,20 @@ class Transferred(Model):
             param.requires_grad = False
         num_ftrs = self.model.fc.in_features
         self.model.fc = torch.nn.Linear(num_ftrs, num_classes)
-        hidden_layer_size = 10
+        hidden_layer_size = 20
         self.model.fc = torch.nn.Sequential(
             torch.nn.Linear(num_ftrs, hidden_layer_size),
             torch.nn.BatchNorm1d(hidden_layer_size),
-            torch.nn.LeakyReLU(inplace=True),
+            torch.nn.ReLU(inplace=True),
+            torch.nn.Dropout(0.5),
             torch.nn.Linear(hidden_layer_size, hidden_layer_size),
             torch.nn.BatchNorm1d(hidden_layer_size),
-            torch.nn.LeakyReLU(inplace=True),
+            torch.nn.ReLU(inplace=True),
+            torch.nn.Dropout(0.5),
             torch.nn.Linear(hidden_layer_size, hidden_layer_size),
             torch.nn.BatchNorm1d(hidden_layer_size),
-            torch.nn.LeakyReLU(inplace=True),
+            torch.nn.ReLU(inplace=True),
+            torch.nn.Dropout(0.5),
             torch.nn.Linear(hidden_layer_size, num_classes),
             torch.nn.BatchNorm1d(num_classes),
             torch.nn.Sigmoid(),
@@ -37,3 +40,9 @@ class Transferred(Model):
 
     def forward(self, x):
         return self.model(x)
+
+    def train(self):
+        self.model.train()
+
+    def eval(self):
+        self.model.eval()

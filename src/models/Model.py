@@ -33,7 +33,7 @@ class Model(nn.Module):
         axs[1].set_title('Development Loss')
         previous_loss_total = float('inf')
         for epoch in range(n_epochs):
-            self.model.train()  # set model to training mode
+            self.train()  # set model to training mode
             for batch_num, (data, target) in enumerate(train_loader):
                 data, target = data.to(device), target.to(device)
 
@@ -70,7 +70,7 @@ class Model(nn.Module):
                 figure.canvas.flush_events()
 
             with torch.no_grad():
-                self.model.eval()  # set model to eval mode
+                self.eval()  # set model to eval mode
                 # dev_total = 0
                 # dev_correct = 0
                 loss_total = 0
