@@ -23,12 +23,10 @@ def create_barlabels(ax, labels):
 
 def create_class_plot():
   df = read_data()
-  class_categories = list(df.columns.values)
-  num_images = df.iloc[:,:].sum().values
-  df2 = pd.DataFrame({'labels': class_categories, 'images': num_images})
+  df2 = pd.DataFrame({'labels':  list(df.columns.values), 'images': df.iloc[:,:].sum().values})
   df2 = df2.sort_values(by=['images'], ascending=False)
   ax = sns.barplot(x=df2.labels, y=df2.images)
-  create_texts('Number of images in each category class','Number of Images', 'Name of labels')
+  create_texts('Number of images in each category class','Number of Images', 'Labels')
   labels = df2.images
   create_barlabels(ax, labels)
   plt.show()
