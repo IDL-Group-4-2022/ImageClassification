@@ -63,7 +63,7 @@ else:
 model = Model(NUM_CLASSES).to(device)
 
 # optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
-optimizer = torch.optim.SGD(model.parameters(), lr=LR, weight_decay=1e-4)  # weight_decay adds l2 norm regularizer
+optimizer = torch.optim.SGD(model.parameters(), lr=LR, weight_decay=1e-3, momentum=0.01)  # weight_decay adds l2 norm regularizer
 
 # ratio as per recommended: https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html#torch.nn.BCEWithLogitsLoss
 class_positive_counts = np.sum(df.values, axis=0)
