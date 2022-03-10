@@ -28,7 +28,7 @@ np.random.seed(42)
 #--- hyperparameters ---
 VERBOSE = 2
 N_EPOCHS = 100
-BATCH_SIZE_TRAIN = 200
+BATCH_SIZE_TRAIN = 100
 BATCH_SIZE_TEST = 2000
 LR = 0.05
 WEIGHT_DECAY = 1e-5
@@ -63,9 +63,16 @@ else:
 model = Model(NUM_CLASSES).to(device)
 
 # optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
-optimizer = torch.optim.Adam(model.parameters(), weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
+optimizer = torch.optim.SGD(model.parameters(), lr=LR, weight_decay=1e-4)  # weight_decay adds l2 norm regularizer
 
-loss_function = torch.nn.BCELoss()
+# ratio as per recommended: https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html#torch.nn.BCEWithLogitsLoss
+class_positive_counts = np.sum(df.values, axis=0)
+class_negative_counts = len(df) - np.sum(df.values, axis=0)
+ratio = class_negative_counts / class_positive_counts
+weights = torch.Tensor(ratio).to(device)
+weights = weights / sum(weights)
+
+loss_function = torch.nn.BCEWithLogitsLoss(pos_weight=weights)
 
 #--- training ---
 model.do_train(

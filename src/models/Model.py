@@ -58,7 +58,7 @@ class Model(nn.Module):
                         f'/{len(train_loader)}: Loss: {train_loss:.4f}'
                     )
                 if verbose > 1:
-                    predicted = torch.where(output > 0.5, 1, 0)
+                    predicted = torch.where(torch.sigmoid(output) > 0.5, 1, 0)
                     print_metrics_multilabel(
                         target.cpu().numpy(), predicted.cpu().numpy()
                     )
@@ -98,7 +98,7 @@ class Model(nn.Module):
                         f'Development: Epoch {epoch + 1}'
                         f': Loss: {loss_total:.4f}'
                     )
-                    predicted = torch.where(dev_output > 0.5, 1, 0)
+                    predicted = torch.where(torch.sigmoid(dev_output) > 0.5, 1, 0)
                     print_metrics_multilabel(
                         dev_target.cpu().numpy(), predicted.cpu().numpy()
                     )
