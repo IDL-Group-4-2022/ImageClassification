@@ -104,7 +104,7 @@ class Model(nn.Module):
                     )
 
                 # early stopping
-                if loss_total < min_loss:
+                if loss_total < min_loss + 1e-4:
                     min_loss = loss_total
                     dev_loss_lower_than_min_consecutive_count = 0
                 elif min_loss < loss_total:

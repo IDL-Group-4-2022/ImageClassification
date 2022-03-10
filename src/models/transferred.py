@@ -19,7 +19,7 @@ class Transferred(Model):
         #     param.requires_grad = False
         num_ftrs = self.model.fc.in_features
         self.model.fc = torch.nn.Linear(num_ftrs, num_classes)
-        hidden_layer_size = 20
+        hidden_layer_size = 40
         self.model.fc = torch.nn.Sequential(
             torch.nn.Linear(num_ftrs, hidden_layer_size),
             torch.nn.BatchNorm1d(hidden_layer_size),
