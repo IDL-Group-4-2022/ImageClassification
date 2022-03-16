@@ -55,7 +55,7 @@ class Model(nn.Module):
                     print(
                         f'Training: Epoch {epoch}/{n_epochs}'
                         f' - Batch {batch_num + 1}'
-                        f'/{len(train_loader)}: Loss: {train_loss:.4f}'
+                        f'/{len(train_loader)}, Average Loss: {train_loss:.4f}'
                     )
                 if verbose > 1:
                     predicted = torch.where(torch.sigmoid(output) > 0.5, 1, 0)
@@ -96,7 +96,7 @@ class Model(nn.Module):
                 if verbose > 0:
                     print(
                         f'Development: Epoch {epoch + 1}'
-                        f': Loss: {loss_total:.4f}'
+                        f', Average Loss: {loss_total:.4f}'
                     )
                     predicted = torch.where(torch.sigmoid(dev_output) > 0.5, 1, 0)
                     print_metrics_multilabel(
