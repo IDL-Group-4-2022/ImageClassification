@@ -112,4 +112,4 @@ class Model(nn.Module):
                     if dev_loss_lower_than_min_consecutive_count == 3:
                         break
         plt.ioff()
-        plt.show(block=True)
+        plt.savefig('resources/models/Transferred.png')
