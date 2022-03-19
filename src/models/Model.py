@@ -57,7 +57,8 @@ class Model(nn.Module):
                     print(
                         f'Training: Epoch {epoch}/{n_epochs}'
                         f' - Batch {batch_num + 1}'
-                        f'/{len(train_loader)}, Average Loss: {train_loss:.4f}'
+                        f'/{len(train_loader)}, Average Loss: {train_loss:.4f}',
+                        flush=True
                     )
                 if verbose > 1:
                     predicted = torch.where(torch.sigmoid(output) > 0.5, 1, 0)
