@@ -7,7 +7,6 @@ import torch
 from matplotlib import pyplot as plt
 from utils.metrics import print_metrics_multilabel
 
-
 class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
@@ -27,6 +26,7 @@ class Model(nn.Module):
         dev_losses = []
         dev_batches = []
         dev_loss_lower_than_min_consecutive_count = 0
+
         if interactive:
             plt.ion()
             figure, axs = plt.subplots(1, 2)
@@ -34,6 +34,7 @@ class Model(nn.Module):
             axs[0].set_title('Train Loss')
             dev_line, = axs[1].plot(dev_batches, dev_losses, label='dev_loss')
             axs[1].set_title('Development Loss')
+
         min_loss = float('inf')
         for epoch in range(2):
             self.train()  # set model to training mode
@@ -92,6 +93,7 @@ class Model(nn.Module):
                 loss_total = loss_total.item() / len(dev_loader)
                 dev_losses.append(loss_total)
                 dev_batches.append(len(train_losses))
+
                 if interactive:
                     axs[1].set_xlim(0, dev_batches[-1] * 1.2)
                     axs[1].set_ylim(0, max(dev_losses) * 1.2)
