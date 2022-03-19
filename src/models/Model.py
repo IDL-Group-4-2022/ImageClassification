@@ -84,7 +84,8 @@ class Model(nn.Module):
 
                     loss_total += loss_function(dev_output, dev_target)
 
-                dev_losses.append(loss_total.item())
+                loss_total = loss_total.item() / len(dev_loader)
+                dev_losses.append(loss_total)
                 dev_batches.append(len(train_losses))
                 axs[1].set_xlim(0, dev_batches[-1] * 1.2)
                 axs[1].set_ylim(0, max(dev_losses) * 1.2)
