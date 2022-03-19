@@ -10,6 +10,7 @@
 # * Silva Perander
 
 # %%
+from multiprocessing import reduction
 import sys
 sys.path += ["src"]
 
@@ -20,6 +21,7 @@ import pandas as pd
 from utils.image_loader import get_dataloaders
 # from models.cnn1 import CNN as Model
 from models.transferred import Transferred as Model
+from models.cnn2 import CNN2 as Model2
 
 torch.manual_seed(42)
 np.random.seed(42)
@@ -28,9 +30,9 @@ np.random.seed(42)
 #--- hyperparameters ---
 VERBOSE = 2
 N_EPOCHS = 100
-BATCH_SIZE_TRAIN = 200
+BATCH_SIZE_TRAIN = 50
 BATCH_SIZE_TEST = 2000
-LR = 0.05
+LR = 0.01
 WEIGHT_DECAY = 1e-5
 
 
@@ -60,10 +62,10 @@ else:
 
 # %%
 #--- set up ---
-model = Model(NUM_CLASSES).to(device)
+model = Model2(NUM_CLASSES).to(device)
 
-# optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
-optimizer = torch.optim.Adam(model.parameters(), weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
+optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # weight_decay adds l2 norm regularizer
+#optimizer = torch.optim.Adam(model.parameters(), weight_decay=WEIGHT_DECAY)  # weight_decay adds l2 norm regularizer
 
 loss_function = torch.nn.BCELoss()
 

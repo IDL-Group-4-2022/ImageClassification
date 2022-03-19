@@ -15,8 +15,8 @@ class Transferred(Model):
         # Source: https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html
         self.num_classes = num_classes
         self.model = models.resnext50_32x4d(pretrained=True)
-        for param in self.model.parameters():
-            param.requires_grad = False
+        # for param in self.model.parameters():
+        #     param.requires_grad = False
         num_ftrs = self.model.fc.in_features
         self.model.fc = torch.nn.Linear(num_ftrs, num_classes)
         hidden_layer_size = 20
@@ -24,18 +24,18 @@ class Transferred(Model):
             torch.nn.Linear(num_ftrs, hidden_layer_size),
             torch.nn.BatchNorm1d(hidden_layer_size),
             torch.nn.ReLU(inplace=True),
-            torch.nn.Dropout(0.5),
+            # torch.nn.Dropout(0.5),
             torch.nn.Linear(hidden_layer_size, hidden_layer_size),
             torch.nn.BatchNorm1d(hidden_layer_size),
             torch.nn.ReLU(inplace=True),
-            torch.nn.Dropout(0.5),
+            # torch.nn.Dropout(0.5),
             torch.nn.Linear(hidden_layer_size, hidden_layer_size),
             torch.nn.BatchNorm1d(hidden_layer_size),
             torch.nn.ReLU(inplace=True),
-            torch.nn.Dropout(0.5),
+            # torch.nn.Dropout(0.5),
             torch.nn.Linear(hidden_layer_size, num_classes),
             torch.nn.BatchNorm1d(num_classes),
-            torch.nn.Sigmoid(),
+            # torch.nn.Sigmoid(),
         )
 
     def forward(self, x):
