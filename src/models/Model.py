@@ -7,7 +7,6 @@ import torch
 from matplotlib import pyplot as plt
 from utils.metrics import print_metrics_multilabel
 
-
 class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
