@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def show_image(imgs_path: str, imgidx: int, df: pd.DataFrame) -> None:
+def show_image(imgs_path: Path, imgidx: int, df: pd.DataFrame) -> None:
     img_name = df.index[imgidx]
     print(img_name)
     print([c for c in df.columns if df.loc[img_name, c] == 1])
