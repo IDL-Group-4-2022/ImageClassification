@@ -1,10 +1,9 @@
-# %%
 import torch
 import torch.utils.data
 import numpy as np
 import pandas as pd
 from utils.image_loader import get_dataloaders
-# from models.cnn1 import CNN as Model
+# from models.cnn2 import CNN as Model
 from models.transferred import Transferred as Model
 
 torch.manual_seed(42)
@@ -67,3 +66,4 @@ model.do_train(
 )
 
 torch.save(model, 'resources/models/Transferred.pytorch')
+# torch.save(model, 'resources/models/Cnn2.pytorch')

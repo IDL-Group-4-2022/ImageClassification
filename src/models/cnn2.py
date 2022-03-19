@@ -56,7 +56,6 @@ class CNN2(Model):
             torch.nn.ReLU(inplace=True),
             torch.nn.Dropout(0.5),
             torch.nn.Linear(64 * 7 * 7, self.num_classes),
-            torch.nn.Sigmoid(),
         )
 
     def forward(self, x):
