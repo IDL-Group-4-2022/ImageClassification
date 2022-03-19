@@ -56,7 +56,8 @@ class CNN(Model):
             torch.nn.ReLU(inplace=True),
             torch.nn.Dropout(0.5),
             torch.nn.Linear(4 * 7 * 7, self.num_classes),
-            torch.nn.Sigmoid(),
+            torch.nn.BatchNorm1d(self.num_classes),
+            # torch.nn.Sigmoid(),
         )
 
     def forward(self, x):
