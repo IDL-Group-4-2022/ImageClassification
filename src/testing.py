@@ -12,6 +12,14 @@ def test_images(
     labels: list[str],
     target_csv_path: Path
 ) -> None:
+    """Get predictions for the test set
+
+    Args:
+        images_path (Path): image path
+        model_path (Path): model path
+        labels (list[str]): labels
+        target_csv_path (Path): path to write the results
+    """
     if torch.cuda.is_available():
         device = torch.device('cuda')
     else:

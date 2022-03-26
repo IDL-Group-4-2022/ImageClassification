@@ -5,6 +5,18 @@ from torch.utils.data import DataLoader
 
 
 def get_dataloaders(df, test_size, img_dir, batch_size_train, batch_size_test):
+    """Generate train and test dataloaders from a DataFrame
+
+    Args:
+        df (DataFrame): DataFrame with image ids as index, image labels as column names, binary values
+        test_size (float): between 0 and 1
+        img_dir (string): image directory
+        batch_size_train (int): batch size for training set
+        batch_size_test (int): batch size for test set
+
+    Returns:
+        tuple: training and test dataloaders
+    """
     colour_jitter = 0.1
     train_transform = transforms.Compose([
         transforms.RandomAdjustSharpness(2),

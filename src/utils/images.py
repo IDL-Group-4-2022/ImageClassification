@@ -11,6 +11,13 @@ import pandas as pd
 
 
 def show_image(imgs_path: Path, imgidx: int, df: pd.DataFrame) -> None:
+    """Show image
+
+    Args:
+        imgs_path (Path): image path
+        imgidx (int): image id
+        df (pd.DataFrame): DataFrame with image ids as index, image labels as column names, binary values
+    """
     img_name = df.index[imgidx]
     print(img_name)
     print([c for c in df.columns if df.loc[img_name, c] == 1])

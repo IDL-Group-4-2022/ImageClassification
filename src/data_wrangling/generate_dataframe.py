@@ -1,7 +1,7 @@
 """
 This script generates train.csv from the data folders
 
-im_name will correspons to multilabel one hot encoded labels
+im_name will correspond to multilabel one hot encoded labels
 """
 
 

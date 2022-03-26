@@ -6,6 +6,12 @@ from sklearn.metrics import precision_score, recall_score, f1_score
 
 
 def print_metrics_multilabel(target, output):
+    """Print performance metrics for multilabel classification
+
+    Args:
+        target (np.array): actual labels
+        output (np.array): predicted labels
+    """
     print(
         '\tMacro Precision: '
         f'{precision_score(target, output, average="macro", zero_division=0)}'

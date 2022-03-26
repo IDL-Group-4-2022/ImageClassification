@@ -10,6 +10,14 @@ from matplotlib import pyplot as plt
 def predict_image(
     images_path: Path, image_ids: list[int], model_path: Path, df: pd.DataFrame
 ) -> None:
+    """Predict labels for image
+
+    Args:
+        images_path (Path): image path
+        image_ids (list[int]): image ids
+        model_path (Path): model path
+        df (pd.DataFrame): DataFrame with image ids as index, image labels as column names, binary values
+    """
     if torch.cuda.is_available():
         device = torch.device('cuda')
     else:

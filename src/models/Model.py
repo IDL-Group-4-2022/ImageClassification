@@ -23,6 +23,18 @@ class Model(nn.Module):
         verbose: int = 1,
         interactive=False,
     ) -> None:
+        """Train the classifier
+
+        Args:
+            n_epochs (int): number of epochs
+            device (str): device
+            loss_function (torch.nn.Module): loss function
+            optimizer (torch.nn.Module): optimizer
+            train_loader (torch.utils.data.DataLoader): training dataloader
+            dev_loader (torch.utils.data.DataLoader): development dataloader
+            verbose (int, optional): if 0, do not print accuracies. If > 0, print loss, if > 1, print loss and other performance metrics. Defaults to 1.
+            interactive (bool, optional): if True, plot loss. Defaults to False.
+        """
         train_losses = []
         dev_losses = []
         dev_batches = []
