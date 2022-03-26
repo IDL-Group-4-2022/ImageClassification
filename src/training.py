@@ -1,3 +1,9 @@
+"""
+This file trains a pytorch model, given the parameters and directory for
+the data. It acts as a mediator (see mediator design pattern for details)
+between the other classes, then saved the model to resources/models/
+"""
+
 import torch
 import torch.utils.data
 import numpy as np

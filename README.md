@@ -10,7 +10,7 @@
 ### Location of adjustable parameters
 
 * `src/utils/image_loader.py` -- adjust (a) transforms
-* `src/testing/project.py` -- adjust (b) model and (c) optimizer
+* `src/training.py` -- adjust (b) model and (c) optimizer
 
 ## Other scripts
 
