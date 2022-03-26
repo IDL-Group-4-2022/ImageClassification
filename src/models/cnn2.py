@@ -1,11 +1,10 @@
 """
-A CNN model
+A CNN2 model used in training phase
 """
 
 import torch
 import torch.utils.data
 from models.Model import Model
-
 
 class CNN2(Model):
     def __init__(self, num_classes):
