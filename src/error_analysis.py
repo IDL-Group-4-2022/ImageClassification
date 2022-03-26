@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 
 
 def predict_image(
-    img_path: Path, model_path: Path, labels: list[str]
+    images_path: Path, image_id: int, model_path: Path, df: pd.DataFrame
 ) -> None:
     if torch.cuda.is_available():
         device = torch.device('cuda')
@@ -16,19 +16,29 @@ def predict_image(
         device = torch.device('cpu')
     model = torch.load(model_path).to(device)
     model.eval()
-    image = Image.open(img_path).convert("RGB")
+    labels = df.columns
+    image = Image.open(f"{images_path}im{image_id}.jpg").convert("RGB")
     tensor = transforms.ToTensor()(image).unsqueeze_(0).to(device)
     predictions = np.where(torch.sigmoid(model(tensor)).cpu() > 0.5, 1, 0)[0]
-    print([labels[i] for i, _ in enumerate(predictions) if i == 1])
+    actual = df.loc[image_id]
+    print(
+        "actual: "
+        f"{[labels[i] for i, onehot in enumerate(actual) if onehot == 1]}"
+    )
+    print(
+        "Predicted: "
+        f"{[labels[i] for i, onehot in enumerate(predictions) if onehot == 1]}"
+    )
     plt.imshow(image)
     plt.show()
 
 
 def test_predict_image():
     predict_image(
-        'resources/data/original/dl2021-image-corpus-proj/images/im311.jpg',
-        'resources/models/Transferred.pytorch',
-        pd.read_csv('resources/data/generated/train.csv').columns,
+        'resources/data/original/dl2021-image-corpus-proj/images/',
+        200,
+        'resources/models/Cnn2_final.pytorch',
+        pd.read_csv('resources/data/generated/train.csv',index_col='im_name'),
     )
 
 
