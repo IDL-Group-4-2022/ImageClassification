@@ -141,5 +141,5 @@ class Model(nn.Module):
             axs[1].plot(dev_batches, dev_losses, label='dev_loss')
             axs[1].set_title('Development Loss')
             axs[1].set_ylim(bottom=0, top=top)
-        plt.savefig('resources/models/Transferred.png')
-        # plt.savefig('resources/models/Cnn2.png')
+        # plt.savefig('resources/models/Transferred.png')
+        plt.savefig('resources/models/Cnn2.png')
