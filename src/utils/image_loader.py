@@ -17,7 +17,7 @@ def get_dataloaders(df, test_size, img_dir, batch_size_train, batch_size_test):
         transforms.GaussianBlur(kernel_size=3, sigma=(0.01, 4)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
-        #transforms.RandomAffine(degrees=180),
+        # transforms.RandomAffine(degrees=180),
         transforms.RandomPerspective(),
         transforms.RandomGrayscale(),
         transforms.ToTensor(),
